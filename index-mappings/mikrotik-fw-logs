@@ -1,0 +1,48 @@
+PUT _index_template/exeon-mikrotik-fw-logs
+{
+  "priority": 200,
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "exeon-ilm-policy"
+        },
+        "default_pipeline": "mikrotik_fw_ingest",
+        "refresh_interval": "60s",
+        "number_of_shards": "2",
+        "number_of_replicas": "0"
+      }
+    },
+    "mappings": {
+      "_routing": {
+        "required": false
+      },
+      "numeric_detection": false,
+      "dynamic_date_formats": [
+        "strict_date_optional_time",
+        "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z"
+      ],
+      "dynamic": true,
+      "_source": {
+        "excludes": [],
+        "includes": [],
+        "enabled": true
+      },
+      "dynamic_templates": [
+        {
+          "strings_as_keywords": {
+            "mapping": {
+              "type": "keyword"
+            },
+            "match_mapping_type": "string"
+          }
+        }
+      ],
+      "date_detection": true
+    }
+  },
+  "index_patterns": [
+    "exeon-flow-mikrotik-fw-messages-*"
+  ],
+  "composed_of": []
+}
